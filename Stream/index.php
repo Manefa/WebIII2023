@@ -42,7 +42,8 @@
                         <img src="<?php echo $row["Image"];   ?>" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $row["Titre"];   ?></h5>
-                            <a href="pages/modifier.php?id=<?php echo $row["id"]; ?>" class="btn btn-danger">Modifier</a>
+                            <a href="pages/modifier.php?id=<?php echo $row["id"]; ?>" class="btn btn-warning">Modifier</a>
+                            <a href="pages/supprimer.php?id=<?php echo $row["id"]; ?>" class="btn btn-danger">Supprimer</a>
                         </div>
                     </div>
             <?php }

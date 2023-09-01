@@ -11,41 +11,42 @@
 
 <body>
 
-    <h1>
-        Welcome <?php echo $_GET["id"]; ?><br> </h1>
-
     <?php
-    $oldTitre = "";
-    $oldImage = "";
-    $servername  =  "localhost";
-    $username  =  "root";
-    $password  =  "root";
-    $dbname  =  "films";
-    //  Create  connection
-    $conn  =  new  mysqli($servername,  $username,  $password,  $dbname);
-    //  Check  connection
-    if ($conn->connect_error) {
-        die("Connection  failed:  "  .  $conn->connect_error);
-    }
-    $sql  =  "SELECT  *  FROM  films";
-    $result  =  $conn->query($sql);
-    if ($result->num_rows  >  0) {
-        //  output  data  of  each  row
-        while ($row  =  $result->fetch_assoc()) {
-            $oldTitre = $row["Titre"];
-            $oldImage = $row["Image"];
-            
+    if ($_SERVER["REQUEST_METHOD"] == "GET") {
+        $oldTitre = "";
+        $oldImage = "";
+        $servername  =  "localhost";
+        $username  =  "root";
+        $password  =  "root";
+        $dbname  =  "films";
+        //  Create  connection
+        $conn  =  new  mysqli($servername,  $username,  $password,  $dbname);
+        //  Check  connection
+        if ($conn->connect_error) {
+            die("Connection  failed:  "  .  $conn->connect_error);
         }
-    } else {
-        echo  "0  results";
+        $sql  =  "SELECT  *  FROM  films";
+        $result  =  $conn->query($sql);
+        if ($result->num_rows  >  0) {
+            //  output  data  of  each  row
+            while ($row  =  $result->fetch_assoc()) {
+                if ($row["id"] == $_GET["id"]) {
+                    $oldTitre = $row["Titre"];
+                    $oldImage = $row["Image"];
+                }
+            }
+        } else {
+            echo  "0  results";
+        }
+        $conn->close();
     }
-    $conn->close();
+
     ?>
 
 
     <div class="container-fluid">
         <div class="row">
-            <h1 class="mt-3 text-center text-danger fs-1">Ajouter un film</h1>
+            <h1 class="mt-3 text-center text-danger fs-1">Modifier un film</h1>
         </div>
         <div class="row">
 
@@ -54,14 +55,13 @@
             $titreErreur = "";
             $image = "";
             $imageErreur = "";
-
+            $id = "";
+            $idFilm = $_GET["id"];
             $erreur = false;
 
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 //Si on entre, on est dans l'envoie du formulaire
-
-
 
                 // titre du film
 
@@ -81,6 +81,8 @@
                     $image = test_input($_POST["image"]);
                 }
 
+                $id = $_POST['id'];
+
                 // Inserer dans la base de données
 
                 if ($erreur == false) {
@@ -95,7 +97,9 @@
                     if (!$conn) {
                         die("Connection failed: " . mysqli_connect_error());
                     }
-                    $sql = "INSERT INTO `films` (`id`, `Image`, `Titre`) VALUES (NULL, '$image', '$titre')";
+
+                    $sql = "UPDATE `films` SET `Image` = '$image', `Titre` = '$titre' WHERE `films`.`id` = $id";
+
                     if (mysqli_query($conn, $sql)) {
                         header("Location: ../index.php");
                     } else {
@@ -124,12 +128,18 @@
 
                         <div class="mb-3">
                             <label for="image" class="form-label">image</label>
-                            <input type="text" class="form-control" id="image" aria-describedby="imageHelp" name="image" value="<?php echo $image; ?>">
+                            <input type="text" class="form-control" id="image" aria-describedby="imageHelp" name="image" value="<?php echo $oldImage; ?>">
                             <span style="color:red" ;><?php echo $imageErreur; ?></span>
                             <br>
                         </div>
 
-                        <button type="submit" class="btn btn-success">Ajouter</button>
+                        <div class="mb-3">
+                            <input type="hidden" class="form-control" id="id" aria-describedby="imageHelp" name="id" value="<?php echo $idFilm; ?>">
+
+                            <br>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Modifier</button>
                         <button type="submit" class="btn btn-dark"><a href="../index.php" style="color:white; text-decoration: none;">Retour a la page principale</a></button>
 
                     </form>
