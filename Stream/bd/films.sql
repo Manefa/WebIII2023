@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Mar 29 Août 2023 à 21:29
+-- Généré le :  Ven 08 Septembre 2023 à 14:07
 -- Version du serveur :  5.7.11
 -- Version de PHP :  5.6.18
 
@@ -39,8 +39,29 @@ CREATE TABLE `films` (
 INSERT INTO `films` (`id`, `Image`, `Titre`) VALUES
 (3, 'https://media.senscritique.com/media/000021016363/300/tirailleurs.jpg', 'Tirailleurs'),
 (4, 'https://media.senscritique.com/media/000021101552/300/the_pale_blue_eye.png', 'The Pale Blue Eye'),
-(5, 'https://media.senscritique.com/media/000021038021/300/terrifier_2.png', 'Terrifier 2'),
 (6, 'https://media.senscritique.com/media/000021055723/300/babylon.png', 'Babylon');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `user` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(1024) NOT NULL,
+  `ip` varchar(1024) NOT NULL,
+  `machine` varchar(1024) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `users`
+--
+
+INSERT INTO `users` (`id`, `user`, `email`, `password`, `ip`, `machine`) VALUES
+(3, 'john', 'john@gmail.com', '9631c1ef976a1d3c728f1b10ced27243631943ff', '206.167.140.192', 'CegepPc');
 
 --
 -- Index pour les tables exportées
@@ -53,6 +74,14 @@ ALTER TABLE `films`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user` (`user`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
 -- AUTO_INCREMENT pour les tables exportées
 --
 
@@ -60,7 +89,12 @@ ALTER TABLE `films`
 -- AUTO_INCREMENT pour la table `films`
 --
 ALTER TABLE `films`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT pour la table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

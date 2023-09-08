@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +10,11 @@
     <title>Supprimer</title>
 </head>
 <body>
+<?php
+    if (isset($_SESSION["connexion"])  && $_SESSION["connexion"] == true) {
+
+
+    ?>
     <?php 
                     $id = $_GET['id'];
                     $servername = "localhost";
@@ -27,5 +35,10 @@
                     }
                     mysqli_close($conn);
     ?> 
+    <?php
+    } else {
+        header("Location: pages/connexion.php");
+    }
+    ?>
 </body>
 </html>
